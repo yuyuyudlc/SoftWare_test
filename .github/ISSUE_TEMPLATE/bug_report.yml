@@ -1,0 +1,71 @@
+name: Bug Report
+description: 提交一个缺陷记录
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: input
+    id: module
+    attributes:
+      label: 影响模块
+      description: 缺陷所在功能模块
+      placeholder: 如：类型转换/字符串转换
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境信息
+      description: 操作系统、Go 版本、分支、提交号
+      placeholder: |
+        OS: macOS 14
+        Go: 1.26.1
+        Branch: main
+        Commit: abcdef1
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请按编号列出复现流程
+      placeholder: |
+        1. 执行 ...
+        2. 输入 ...
+        3. 观察到 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期结果
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 严重级别
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志/截图/补充信息
+      description: 可粘贴 CI 日志片段或测试输出
+      render: shell
