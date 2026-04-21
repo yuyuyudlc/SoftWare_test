@@ -79,3 +79,37 @@ GitHub Actions 流程：
 
 说明：该图展示了仓库中的核心文件与目录，包含工作流、缺陷记录和报告文件。
 
+## 7. 命令行日志（关键片段）
+
+### 7.1 GitHub Actions 首次失败日志（子模块未拉取）
+
+```text
+go build -o dist/my-go-project .
+Error: main.go:6:2: github.com/spf13/cast@v0.0.0 (replaced by ./cast): reading cast/go.mod: open /home/runner/work/SoftWare_test/SoftWare_test/cast/go.mod: no such file or directory
+Process completed with exit code 2.
+```
+
+说明：该日志表明 CI 环境未获取到本地 `./cast` 目录内容，导致 build 失败。
+
+### 7.2 修复配置后本地验证日志（测试本地 cast）
+
+```text
+$ test -f cast/go.mod && echo 'cast/go.mod ok'
+cast/go.mod ok
+
+$ make build
+mkdir -p dist
+go build -o dist/my-go-project .
+
+$ make test-smoke
+go test -v -run 'TestCastSuite|TestToStringE' ./...
+=== RUN   TestCastSuite
+=== RUN   TestCastSuite/ToBoolE/可以解析_false_字符串
+	main_test.go:46: 得到 true，期望 false
+--- FAIL: TestCastSuite (0.00s)
+FAIL
+make: *** [test-smoke] Error 1
+```
+
+说明：该日志证明当前已成功测试本地 `cast` 代码，并通过冒烟测试发现了 `ToBoolE("false")` 的缺陷。
+
